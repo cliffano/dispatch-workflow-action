@@ -1,0 +1,16 @@
+{
+  "tagFormat": "v{version}",
+  "resources": [
+    {
+      "path": "action.yml",
+      "type": "yaml",
+      "params": {
+        "property": "version"
+      }
+    },
+    {
+      "path": "CHANGELOG.md",
+      "type": "keep-a-changelog"
+    }
+  ]
+}
