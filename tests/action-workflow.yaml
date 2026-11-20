@@ -7,21 +7,143 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
-      - name: Test Action
-        uses: ./
-        with:
-          github_token: "test-github-token"
-          message: 'Hello World'
-          push_changes: 'false'
-      - name: Transform message and show variants
-        id: message
-        uses: ./
-        with:
-          message: 'Hello World'
-      - name: Verify message outputs
-        shell: sh
+      - name: Set up fake gh CLI
+        shell: bash
         run: |
-          test "${{ steps.message.outputs.original }}" = 'Hello World'
-          test "${{ steps.message.outputs.reverse }}" = 'dlroW olleH'
-          test "${{ steps.message.outputs.uppercase }}" = 'HELLO WORLD'
-          test "${{ steps.message.outputs.lowercase }}" = 'hello world'
+          # Fake gh CLI which mimics the output of the gh commands used by the action,
+          # so the tests are deterministic and don't call GitHub API:
+          # - cliffano/legacy-repo dispatch doesn't print run URL, like older gh versions
+          # - cliffano/failing-repo run concludes with failure
+          # - cliffano/missing-repo dispatch fails
+          mkdir -p "$RUNNER_TEMP/fake-gh" "$RUNNER_TEMP/fake-gh-state"
+          cat > "$RUNNER_TEMP/fake-gh/gh" <<'EOF'
+          #!/usr/bin/env bash
+          set -o errexit
+          set -o nounset
+          state_dir="$RUNNER_TEMP/fake-gh-state"
+          repo=""
+          args=("$@")
+          for i in "${!args[@]}"; do
+            if [ "${args[$i]}" = "--repo" ]; then
+              repo="${args[$((i + 1))]}"
+            fi
+          done
+          repo_state="$state_dir/${repo//\//_}"
+          case "$1 $2" in
+            "workflow run")
+              echo "$*" >> "$repo_state.args"
+              cat >> "$repo_state.stdin"
+              if [ "$repo" = "cliffano/missing-repo" ]; then
+                echo "HTTP 404: Not Found" >&2
+                exit 1
+              elif [ "$repo" = "cliffano/legacy-repo" ]; then
+                echo "Created workflow_dispatch event for $3 at main"
+              else
+                echo "https://github.com/$repo/actions/runs/1001"
+              fi
+              ;;
+            "run view")
+              # First status check returns in progress, subsequent checks return completed
+              if [ ! -f "$repo_state.viewed" ]; then
+                touch "$repo_state.viewed"
+                echo '{"status": "in_progress", "conclusion": ""}'
+              elif [ "$repo" = "cliffano/failing-repo" ]; then
+                echo '{"status": "completed", "conclusion": "failure"}'
+              else
+                echo '{"status": "completed", "conclusion": "success"}'
+              fi
+              ;;
+            *)
+              echo "Unexpected gh command: $*" >&2
+              exit 1
+              ;;
+          esac
+          EOF
+          chmod +x "$RUNNER_TEMP/fake-gh/gh"
+          echo "$RUNNER_TEMP/fake-gh" >> "$GITHUB_PATH"
+      - name: Dispatch workflow on multiple repos and wait for completion
+        id: multiple
+        uses: ./
+        with:
+          workflow: 'release-minor-workflow.yaml'
+          repos: 'cliffano/suntory, cliffano/olympia'
+          github_token: 'test-github-token'
+          poll_interval: '1'
+      - name: Dispatch workflow with ref and inputs without waiting
+        id: nowait
+        uses: ./
+        with:
+          workflow: 'release-workflow.yaml'
+          repos: 'cliffano/generator-node'
+          github_token: 'test-github-token'
+          ref: 'some-branch'
+          inputs: '{"release_type": "minor"}'
+          wait: 'false'
+      - name: Dispatch workflow when gh doesn't print run URL
+        id: legacy
+        continue-on-error: true
+        uses: ./
+        with:
+          workflow: 'ci-workflow.yaml'
+          repos: 'cliffano/legacy-repo'
+          github_token: 'test-github-token'
+          poll_interval: '1'
+      - name: Dispatch workflow with a failing run
+        id: failing
+        continue-on-error: true
+        uses: ./
+        with:
+          workflow: 'ci-workflow.yaml'
+          repos: 'cliffano/failing-repo,cliffano/another-repo'
+          github_token: 'test-github-token'
+          poll_interval: '1'
+      - name: Dispatch workflow on a missing repo
+        id: missing
+        continue-on-error: true
+        uses: ./
+        with:
+          workflow: 'ci-workflow.yaml'
+          repos: 'cliffano/missing-repo'
+          github_token: 'test-github-token'
+          poll_interval: '1'
+      - name: Verify dispatch outputs
+        shell: bash
+        env:
+          MULTIPLE_RUN_URLS: ${{ steps.multiple.outputs.run_urls }}
+          MULTIPLE_CONCLUSIONS: ${{ steps.multiple.outputs.conclusions }}
+          NOWAIT_RUN_URLS: ${{ steps.nowait.outputs.run_urls }}
+          NOWAIT_CONCLUSIONS: ${{ steps.nowait.outputs.conclusions }}
+          LEGACY_OUTCOME: ${{ steps.legacy.outcome }}
+          LEGACY_RUN_URLS: ${{ steps.legacy.outputs.run_urls }}
+          LEGACY_CONCLUSIONS: ${{ steps.legacy.outputs.conclusions }}
+          FAILING_OUTCOME: ${{ steps.failing.outcome }}
+          FAILING_CONCLUSIONS: ${{ steps.failing.outputs.conclusions }}
+          MISSING_OUTCOME: ${{ steps.missing.outcome }}
+          MISSING_RUN_URLS: ${{ steps.missing.outputs.run_urls }}
+          MISSING_CONCLUSIONS: ${{ steps.missing.outputs.conclusions }}
+        run: |
+          set -o errexit
+          state_dir="$RUNNER_TEMP/fake-gh-state"
+
+          test "$(jq -r '."cliffano/suntory"' <<< "$MULTIPLE_RUN_URLS")" = 'https://github.com/cliffano/suntory/actions/runs/1001'
+          test "$(jq -r '."cliffano/olympia"' <<< "$MULTIPLE_RUN_URLS")" = 'https://github.com/cliffano/olympia/actions/runs/1001'
+          test "$(jq -r '."cliffano/suntory"' <<< "$MULTIPLE_CONCLUSIONS")" = 'success'
+          test "$(jq -r '."cliffano/olympia"' <<< "$MULTIPLE_CONCLUSIONS")" = 'success'
+
+          test "$(jq -r '."cliffano/generator-node"' <<< "$NOWAIT_RUN_URLS")" = 'https://github.com/cliffano/generator-node/actions/runs/1001'
+          test "$(jq -r '."cliffano/generator-node"' <<< "$NOWAIT_CONCLUSIONS")" = ''
+          test "$(cat "$state_dir/cliffano_generator-node.args")" = 'workflow run release-workflow.yaml --repo cliffano/generator-node --ref some-branch --json'
+          test "$(jq -r '.release_type' "$state_dir/cliffano_generator-node.stdin")" = 'minor'
+          test ! -f "$state_dir/cliffano_generator-node.viewed"
+
+          test "$LEGACY_OUTCOME" = 'failure'
+          test "$(jq -r '."cliffano/legacy-repo"' <<< "$LEGACY_RUN_URLS")" = ''
+          test "$(jq -r '."cliffano/legacy-repo"' <<< "$LEGACY_CONCLUSIONS")" = 'error'
+
+          test "$FAILING_OUTCOME" = 'failure'
+          test "$(jq -r '."cliffano/failing-repo"' <<< "$FAILING_CONCLUSIONS")" = 'failure'
+          test "$(jq -r '."cliffano/another-repo"' <<< "$FAILING_CONCLUSIONS")" = 'success'
+
+          test "$MISSING_OUTCOME" = 'failure'
+          test "$(jq -r '."cliffano/missing-repo"' <<< "$MISSING_RUN_URLS")" = ''
+          test "$(jq -r '."cliffano/missing-repo"' <<< "$MISSING_CONCLUSIONS")" = 'error'

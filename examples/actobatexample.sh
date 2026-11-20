@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-set -o errexit
-set -o nounset
-
-printf "\n\n========================================\n"
-printf "Run workflow with action\n"
-cd .. && gh act -P ubuntu-26.04=catthehacker/ubuntu:act-latest -W examples/actobatexample-workflow.yaml
