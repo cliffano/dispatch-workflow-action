@@ -1,4 +1,4 @@
-time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/docker.sock', and daemon socket 'unix:///var/run/docker.sock'"
+time="2026-11-21T03:54:35Z" level=info msg="Using docker host 'unix:///var/run/docker.sock', and daemon socket 'unix:///var/run/docker.sock'"
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Set up job
 [Test Local Action Outside Standard GitHub Workflows Directory/test] 🚀  Start image=catthehacker/ubuntu:act-latest
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker pull image=catthehacker/ubuntu:act-latest platform= username= forcePull=true
@@ -8,23 +8,23 @@ time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/d
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Set up job
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Checkout code
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker cp src=/opt/workspace/. dst=/opt/workspace
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Checkout code [49.08396ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Checkout code [29.248261ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Set up fake gh CLI
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/1.sh] user= workdir=
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Set up fake gh CLI [69.471053ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Set up fake gh CLI [59.706161ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::add-path:: /tmp/fake-gh
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow on multiple repos and wait for completion
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/multiple-composite-dispatch.sh] user= workdir=
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo1] Dispatching release-minor-workflow.yaml
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo2] Dispatching release-minor-workflow.yaml
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo2] Dispatched https://github.com/someid/somerepo2/actions/runs/1001
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo1] Dispatched https://github.com/someid/somerepo1/actions/runs/1001
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo2] Waiting for release-minor-workflow.yaml, status: in_progress
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo2] Dispatched https://github.com/someid/somerepo2/actions/runs/1001
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo1] Waiting for release-minor-workflow.yaml, status: in_progress
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo1] release-minor-workflow.yaml concluded with success
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo2] Waiting for release-minor-workflow.yaml, status: in_progress
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo2] release-minor-workflow.yaml concluded with success
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow [1.34315071s]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo1] release-minor-workflow.yaml concluded with success
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow [1.240296914s]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo1":"https://github.com/someid/somerepo1/actions/runs/1001","someid/somerepo2":"https://github.com/someid/somerepo2/actions/runs/1001"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo1":"success","someid/somerepo2":"success"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow release-minor-workflow.yaml
@@ -35,7 +35,7 @@ time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/d
 | someid/somerepo2 | ✅ success | [#1001](https://github.com/someid/somerepo2/actions/runs/1001) |
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo1":"https://github.com/someid/somerepo1/actions/runs/1001","someid/somerepo2":"https://github.com/someid/somerepo2/actions/runs/1001"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo1":"success","someid/somerepo2":"success"}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow on multiple repos and wait for completion [1.413882744s]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow on multiple repos and wait for completion [1.294856266s]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo1":"https://github.com/someid/somerepo1/actions/runs/1001","someid/somerepo2":"https://github.com/someid/somerepo2/actions/runs/1001"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo1":"success","someid/somerepo2":"success"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow release-minor-workflow.yaml
@@ -49,7 +49,7 @@ time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/d
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/nowait-composite-dispatch.sh] user= workdir=
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo3] Dispatching release-workflow.yaml
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo3] Dispatched https://github.com/someid/somerepo3/actions/runs/1001
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow [200.208064ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow [145.760483ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo3":"https://github.com/someid/somerepo3/actions/runs/1001"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo3":""}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow release-workflow.yaml
@@ -59,7 +59,7 @@ time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/d
 | someid/somerepo3 | 🚀 dispatched | [#1001](https://github.com/someid/somerepo3/actions/runs/1001) |
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo3":"https://github.com/someid/somerepo3/actions/runs/1001"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo3":""}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow with ref and inputs without waiting [272.883496ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow with ref and inputs without waiting [202.032431ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo3":"https://github.com/someid/somerepo3/actions/runs/1001"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo3":""}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow release-workflow.yaml
@@ -74,9 +74,9 @@ time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/d
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo4] Error: gh did not print the dispatched run URL of ci-workflow.yaml, please upgrade gh
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ❗  ::error title=someid/somerepo4::gh did not print the dispatched run URL of ci-workflow.yaml, please upgrade gh
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | Error: ci-workflow.yaml did not succeed on someid/somerepo4
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [206.508304ms]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo4":"error"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [149.23878ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo4":""}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo4":"error"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
 
 | Repository | Result | Run |
@@ -86,7 +86,7 @@ time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/d
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo4":""}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo4":"error"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test] Failed but continue next step
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow when gh doesn't print run URL [280.32133ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow when gh doesn't print run URL [203.38077ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo4":""}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo4":"error"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
@@ -99,15 +99,15 @@ time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/d
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/failing-composite-dispatch.sh] user= workdir=
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo5] Dispatching ci-workflow.yaml
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo6] Dispatching ci-workflow.yaml
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo5] Dispatched https://github.com/someid/somerepo5/actions/runs/1001
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo6] Dispatched https://github.com/someid/somerepo6/actions/runs/1001
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo5] Dispatched https://github.com/someid/somerepo5/actions/runs/1001
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo6] Waiting for ci-workflow.yaml, status: in_progress
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo5] Waiting for ci-workflow.yaml, status: in_progress
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo5] ci-workflow.yaml concluded with failure
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo6] ci-workflow.yaml concluded with success
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ❗  ::error title=someid/somerepo5::ci-workflow.yaml concluded with failure: https://github.com/someid/somerepo5/actions/runs/1001
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | Error: ci-workflow.yaml did not succeed on someid/somerepo5
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [1.346226052s]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [1.244842388s]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo5":"https://github.com/someid/somerepo5/actions/runs/1001","someid/somerepo6":"https://github.com/someid/somerepo6/actions/runs/1001"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo5":"failure","someid/somerepo6":"success"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
@@ -120,7 +120,7 @@ time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/d
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo5":"https://github.com/someid/somerepo5/actions/runs/1001","someid/somerepo6":"https://github.com/someid/somerepo6/actions/runs/1001"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo5":"failure","someid/somerepo6":"success"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test] Failed but continue next step
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow with a failing run [1.415598142s]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow with a failing run [1.298431532s]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo5":"https://github.com/someid/somerepo5/actions/runs/1001","someid/somerepo6":"https://github.com/someid/somerepo6/actions/runs/1001"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo5":"failure","someid/somerepo6":"success"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
@@ -136,9 +136,9 @@ time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/d
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo7] Error: Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ❗  ::error title=someid/somerepo7::Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   | Error: ci-workflow.yaml did not succeed on someid/somerepo7
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [201.962774ms]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo7":""}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [147.229019ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo7":"error"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo7":""}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
 
 | Repository | Result | Run |
@@ -148,7 +148,7 @@ time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/d
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo7":""}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo7":"error"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test] Failed but continue next step
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow on a missing repo [271.435773ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow on a missing repo [202.921743ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo7":""}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo7":"error"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
@@ -158,17 +158,17 @@ time="2026-11-21T03:53:52Z" level=info msg="Using docker host 'unix:///var/run/d
 | someid/somerepo7 | ❌ error: Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found | - |
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Verify dispatch outputs
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/7.sh] user= workdir=
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Verify dispatch outputs [380.235245ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Verify dispatch outputs [254.452575ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Post Dispatch workflow on a missing repo
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow on a missing repo [33.012µs]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow on a missing repo [22.373µs]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Post Dispatch workflow with a failing run
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow with a failing run [31.99µs]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow with a failing run [17.245µs]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Post Dispatch workflow when gh doesn't print run URL
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow when gh doesn't print run URL [21.03µs]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow when gh doesn't print run URL [20.671µs]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Post Dispatch workflow with ref and inputs without waiting
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow with ref and inputs without waiting [27.763µs]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow with ref and inputs without waiting [17.817µs]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Post Dispatch workflow on multiple repos and wait for completion
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow on multiple repos and wait for completion [31.208µs]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow on multiple repos and wait for completion [18.538µs]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Complete job
 [Test Local Action Outside Standard GitHub Workflows Directory/test] Cleaning up container for job test
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Complete job
