@@ -25,12 +25,12 @@ Dispatch a workflow on a repository and wait for completion:
 jobs:
   build:
     steps:
-      - name: 'Upgrade dependencies of generator-node'
+      - name: 'Upgrade dependencies of somerepo1'
         uses: cliffano/dispatch-workflow-action@main
         with:
           workflow: 'upgrade-deps-workflow.yaml'
-          repos: 'cliffano/generator-node'
-          github_token: ${{ secrets.STUDIO_GITHUB_TOKEN }}
+          repos: 'someid/somerepo1'
+          github_token: ${{ secrets.SOME_GITHUB_TOKEN }}
 ```
 
 Dispatch a workflow on multiple repositories in parallel and wait for all of them to complete:
@@ -39,12 +39,12 @@ Dispatch a workflow on multiple repositories in parallel and wait for all of the
 jobs:
   build:
     steps:
-      - name: 'Release suntory and olympia'
+      - name: 'Release somerepo1 and somerepo2'
         uses: cliffano/dispatch-workflow-action@main
         with:
           workflow: 'release-minor-workflow.yaml'
-          repos: 'cliffano/suntory, cliffano/olympia'
-          github_token: ${{ secrets.STUDIO_GITHUB_TOKEN }}
+          repos: 'someid/somerepo1, someid/somerepo2'
+          github_token: ${{ secrets.SOME_GITHUB_TOKEN }}
 ```
 
 Dispatch a workflow on a branch with workflow inputs:
@@ -53,12 +53,12 @@ Dispatch a workflow on a branch with workflow inputs:
 jobs:
   build:
     steps:
-      - name: 'Release suntory from a branch'
+      - name: 'Release somerepo1 from a branch'
         uses: cliffano/dispatch-workflow-action@main
         with:
           workflow: 'release-workflow.yaml'
-          repos: 'cliffano/suntory'
-          github_token: ${{ secrets.STUDIO_GITHUB_TOKEN }}
+          repos: 'someid/somerepo1'
+          github_token: ${{ secrets.SOME_GITHUB_TOKEN }}
           ref: 'some-branch'
           inputs: '{"release_type": "minor"}'
 ```
@@ -69,12 +69,12 @@ Dispatch a workflow without waiting for completion:
 jobs:
   build:
     steps:
-      - name: 'Trigger CI of suntory and olympia'
+      - name: 'Trigger CI of somerepo1 and somerepo2'
         uses: cliffano/dispatch-workflow-action@main
         with:
           workflow: 'ci-workflow.yaml'
-          repos: 'cliffano/suntory, cliffano/olympia'
-          github_token: ${{ secrets.STUDIO_GITHUB_TOKEN }}
+          repos: 'someid/somerepo1, someid/somerepo2'
+          github_token: ${{ secrets.SOME_GITHUB_TOKEN }}
           wait: 'false'
 ```
 
@@ -88,8 +88,8 @@ jobs:
         uses: cliffano/dispatch-workflow-action@main
         with:
           workflow: 'ci-workflow.yaml'
-          repos: 'cliffano/suntory, cliffano/olympia'
-          github_token: ${{ secrets.STUDIO_GITHUB_TOKEN }}
+          repos: 'someid/somerepo1, someid/somerepo2'
+          github_token: ${{ secrets.SOME_GITHUB_TOKEN }}
       - if: always()
         run: |
           echo "Run URLs: ${{ steps.dispatch.outputs.run_urls }}"
@@ -102,9 +102,9 @@ When all workflow runs complete, the action adds a table to the job summary, sho
 
 | Repository | Result | Run |
 |------------|--------|-----|
-| cliffano/suntory | ✅ success | [#1001](https://github.com/cliffano/suntory/actions/runs/1001) |
-| cliffano/olympia | ❌ failure | [#1002](https://github.com/cliffano/olympia/actions/runs/1002) |
-| cliffano/someproject | ❌ error: Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found | - |
+| someid/somerepo1 | ✅ success | [#1001](https://github.com/someid/somerepo1/actions/runs/1001) |
+| someid/somerepo2 | ❌ failure | [#1002](https://github.com/someid/somerepo2/actions/runs/1002) |
+| someid/somerepo3 | ❌ error: Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found | - |
 
 The action also adds an error annotation for each repository whose workflow run didn't succeed, or whose workflow couldn't be dispatched, which is displayed on the workflow run summary page.
 
@@ -113,8 +113,8 @@ The action also adds an error annotation for each repository whose workflow run 
 | Input | Type | Description | Required | Default | Example |
 |-------|------|-------------|----------|---------|---------|
 | workflow | string | Workflow file name or ID to dispatch, the workflow must have a `workflow_dispatch` trigger | Yes | - | `release-minor-workflow.yaml` |
-| repos | string | Comma-separated list of repositories in `owner/repo` format | Yes | - | `cliffano/suntory, cliffano/olympia` |
-| github_token | string | GitHub token with permission to dispatch and read workflow runs on all repositories | Yes | - | `${{ secrets.STUDIO_GITHUB_TOKEN }}` |
+| repos | string | Comma-separated list of repositories in `owner/repo` format | Yes | - | `someid/somerepo1, someid/somerepo2` |
+| github_token | string | GitHub token with permission to dispatch and read workflow runs on all repositories | Yes | - | `${{ secrets.SOME_GITHUB_TOKEN }}` |
 | ref | string | Branch or tag containing the workflow to dispatch | No | Repository default branch | `some-branch` |
 | inputs | string | Workflow inputs defined in a JSON object string | No | `{}` | `{"release_type": "minor"}` |
 | wait | string | Whether to wait for the dispatched workflow runs to complete | No | `true` | `false` |
@@ -122,8 +122,8 @@ The action also adds an error annotation for each repository whose workflow run 
 
 | Output | Description | Example |
 |--------|-------------|---------|
-| run_urls | JSON object of each repository and its dispatched workflow run URL | `{"cliffano/suntory": "https://github.com/cliffano/suntory/actions/runs/1001"}` |
-| conclusions | JSON object of each repository and its workflow run conclusion, empty when `wait` is `false`, or `error` when the workflow could not be dispatched or its run status could not be retrieved | `{"cliffano/suntory": "success"}` |
+| run_urls | JSON object of each repository and its dispatched workflow run URL | `{"someid/somerepo1": "https://github.com/someid/somerepo1/actions/runs/1001"}` |
+| conclusions | JSON object of each repository and its workflow run conclusion, empty when `wait` is `false`, or `error` when the workflow could not be dispatched or its run status could not be retrieved | `{"someid/somerepo1": "success"}` |
 
 ## Colophon
 

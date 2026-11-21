@@ -12,9 +12,10 @@ jobs:
         run: |
           # Fake gh CLI which mimics the output of the gh commands used by the action,
           # so the tests are deterministic and don't call GitHub API:
-          # - cliffano/legacy-repo dispatch doesn't print run URL, like older gh versions
-          # - cliffano/failing-repo run concludes with failure
-          # - cliffano/missing-repo dispatch fails
+          # - someid/somerepo4 dispatch doesn't print run URL, like older gh versions
+          # - someid/somerepo5 run concludes with failure
+          # - someid/somerepo7 dispatch fails with HTTP 404
+          # - other repos dispatch and conclude with success
           mkdir -p "$RUNNER_TEMP/fake-gh" "$RUNNER_TEMP/fake-gh-state"
           cat > "$RUNNER_TEMP/fake-gh/gh" <<'EOF'
           #!/usr/bin/env bash
@@ -33,10 +34,10 @@ jobs:
             "workflow run")
               echo "$*" >> "$repo_state.args"
               cat >> "$repo_state.stdin"
-              if [ "$repo" = "cliffano/missing-repo" ]; then
+              if [ "$repo" = "someid/somerepo7" ]; then
                 echo "HTTP 404: Not Found" >&2
                 exit 1
-              elif [ "$repo" = "cliffano/legacy-repo" ]; then
+              elif [ "$repo" = "someid/somerepo4" ]; then
                 echo "Created workflow_dispatch event for $3 at main"
               else
                 echo "https://github.com/$repo/actions/runs/1001"
@@ -47,7 +48,7 @@ jobs:
               if [ ! -f "$repo_state.viewed" ]; then
                 touch "$repo_state.viewed"
                 echo '{"status": "in_progress", "conclusion": ""}'
-              elif [ "$repo" = "cliffano/failing-repo" ]; then
+              elif [ "$repo" = "someid/somerepo5" ]; then
                 echo '{"status": "completed", "conclusion": "failure"}'
               else
                 echo '{"status": "completed", "conclusion": "success"}'
@@ -66,7 +67,7 @@ jobs:
         uses: ./
         with:
           workflow: 'release-minor-workflow.yaml'
-          repos: 'cliffano/suntory, cliffano/olympia'
+          repos: 'someid/somerepo1, someid/somerepo2'
           github_token: 'test-github-token'
           poll_interval: '1'
       - name: Dispatch workflow with ref and inputs without waiting
@@ -74,7 +75,7 @@ jobs:
         uses: ./
         with:
           workflow: 'release-workflow.yaml'
-          repos: 'cliffano/generator-node'
+          repos: 'someid/somerepo3'
           github_token: 'test-github-token'
           ref: 'some-branch'
           inputs: '{"release_type": "minor"}'
@@ -85,7 +86,7 @@ jobs:
         uses: ./
         with:
           workflow: 'ci-workflow.yaml'
-          repos: 'cliffano/legacy-repo'
+          repos: 'someid/somerepo4'
           github_token: 'test-github-token'
           poll_interval: '1'
       - name: Dispatch workflow with a failing run
@@ -94,7 +95,7 @@ jobs:
         uses: ./
         with:
           workflow: 'ci-workflow.yaml'
-          repos: 'cliffano/failing-repo,cliffano/another-repo'
+          repos: 'someid/somerepo5,someid/somerepo6'
           github_token: 'test-github-token'
           poll_interval: '1'
       - name: Dispatch workflow on a missing repo
@@ -103,7 +104,7 @@ jobs:
         uses: ./
         with:
           workflow: 'ci-workflow.yaml'
-          repos: 'cliffano/missing-repo'
+          repos: 'someid/somerepo7'
           github_token: 'test-github-token'
           poll_interval: '1'
       - name: Verify dispatch outputs
@@ -125,25 +126,25 @@ jobs:
           set -o errexit
           state_dir="$RUNNER_TEMP/fake-gh-state"
 
-          test "$(jq -r '."cliffano/suntory"' <<< "$MULTIPLE_RUN_URLS")" = 'https://github.com/cliffano/suntory/actions/runs/1001'
-          test "$(jq -r '."cliffano/olympia"' <<< "$MULTIPLE_RUN_URLS")" = 'https://github.com/cliffano/olympia/actions/runs/1001'
-          test "$(jq -r '."cliffano/suntory"' <<< "$MULTIPLE_CONCLUSIONS")" = 'success'
-          test "$(jq -r '."cliffano/olympia"' <<< "$MULTIPLE_CONCLUSIONS")" = 'success'
+          test "$(jq -r '."someid/somerepo1"' <<< "$MULTIPLE_RUN_URLS")" = 'https://github.com/someid/somerepo1/actions/runs/1001'
+          test "$(jq -r '."someid/somerepo2"' <<< "$MULTIPLE_RUN_URLS")" = 'https://github.com/someid/somerepo2/actions/runs/1001'
+          test "$(jq -r '."someid/somerepo1"' <<< "$MULTIPLE_CONCLUSIONS")" = 'success'
+          test "$(jq -r '."someid/somerepo2"' <<< "$MULTIPLE_CONCLUSIONS")" = 'success'
 
-          test "$(jq -r '."cliffano/generator-node"' <<< "$NOWAIT_RUN_URLS")" = 'https://github.com/cliffano/generator-node/actions/runs/1001'
-          test "$(jq -r '."cliffano/generator-node"' <<< "$NOWAIT_CONCLUSIONS")" = ''
-          test "$(cat "$state_dir/cliffano_generator-node.args")" = 'workflow run release-workflow.yaml --repo cliffano/generator-node --ref some-branch --json'
-          test "$(jq -r '.release_type' "$state_dir/cliffano_generator-node.stdin")" = 'minor'
-          test ! -f "$state_dir/cliffano_generator-node.viewed"
+          test "$(jq -r '."someid/somerepo3"' <<< "$NOWAIT_RUN_URLS")" = 'https://github.com/someid/somerepo3/actions/runs/1001'
+          test "$(jq -r '."someid/somerepo3"' <<< "$NOWAIT_CONCLUSIONS")" = ''
+          test "$(cat "$state_dir/someid_somerepo3.args")" = 'workflow run release-workflow.yaml --repo someid/somerepo3 --ref some-branch --json'
+          test "$(jq -r '.release_type' "$state_dir/someid_somerepo3.stdin")" = 'minor'
+          test ! -f "$state_dir/someid_somerepo3.viewed"
 
           test "$LEGACY_OUTCOME" = 'failure'
-          test "$(jq -r '."cliffano/legacy-repo"' <<< "$LEGACY_RUN_URLS")" = ''
-          test "$(jq -r '."cliffano/legacy-repo"' <<< "$LEGACY_CONCLUSIONS")" = 'error'
+          test "$(jq -r '."someid/somerepo4"' <<< "$LEGACY_RUN_URLS")" = ''
+          test "$(jq -r '."someid/somerepo4"' <<< "$LEGACY_CONCLUSIONS")" = 'error'
 
           test "$FAILING_OUTCOME" = 'failure'
-          test "$(jq -r '."cliffano/failing-repo"' <<< "$FAILING_CONCLUSIONS")" = 'failure'
-          test "$(jq -r '."cliffano/another-repo"' <<< "$FAILING_CONCLUSIONS")" = 'success'
+          test "$(jq -r '."someid/somerepo5"' <<< "$FAILING_CONCLUSIONS")" = 'failure'
+          test "$(jq -r '."someid/somerepo6"' <<< "$FAILING_CONCLUSIONS")" = 'success'
 
           test "$MISSING_OUTCOME" = 'failure'
-          test "$(jq -r '."cliffano/missing-repo"' <<< "$MISSING_RUN_URLS")" = ''
-          test "$(jq -r '."cliffano/missing-repo"' <<< "$MISSING_CONCLUSIONS")" = 'error'
+          test "$(jq -r '."someid/somerepo7"' <<< "$MISSING_RUN_URLS")" = ''
+          test "$(jq -r '."someid/somerepo7"' <<< "$MISSING_CONCLUSIONS")" = 'error'
