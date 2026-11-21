@@ -1,4 +1,4 @@
-time="2026-11-21T01:40:41Z" level=info msg="Using docker host 'unix:///var/run/docker.sock', and daemon socket 'unix:///var/run/docker.sock'"
+time="2026-11-21T03:02:43Z" level=info msg="Using docker host 'unix:///var/run/docker.sock', and daemon socket 'unix:///var/run/docker.sock'"
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Set up job
 [Test Local Action Outside Standard GitHub Workflows Directory/test] 🚀  Start image=catthehacker/ubuntu:act-latest
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker pull image=catthehacker/ubuntu:act-latest platform= username= forcePull=true
@@ -8,167 +8,167 @@ time="2026-11-21T01:40:41Z" level=info msg="Using docker host 'unix:///var/run/d
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Set up job
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Checkout code
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker cp src=/opt/workspace/. dst=/opt/workspace
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Checkout code [43.401197ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Checkout code [30.881561ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Set up fake gh CLI
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/1.sh] user= workdir=
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Set up fake gh CLI [84.176398ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Set up fake gh CLI [58.047791ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::add-path:: /tmp/fake-gh
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow on multiple repos and wait for completion
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/multiple-composite-dispatch.sh] user= workdir=
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/suntory] Dispatching release-minor-workflow.yaml
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/olympia] Dispatching release-minor-workflow.yaml
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/suntory] Dispatched https://github.com/cliffano/suntory/actions/runs/1001
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/olympia] Dispatched https://github.com/cliffano/olympia/actions/runs/1001
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/olympia] Waiting for release-minor-workflow.yaml, status: in_progress
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/suntory] Waiting for release-minor-workflow.yaml, status: in_progress
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/suntory] release-minor-workflow.yaml concluded with success
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/olympia] release-minor-workflow.yaml concluded with success
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow [1.36262618s]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/suntory":"https://github.com/cliffano/suntory/actions/runs/1001","cliffano/olympia":"https://github.com/cliffano/olympia/actions/runs/1001"}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/suntory":"success","cliffano/olympia":"success"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo1] Dispatching release-minor-workflow.yaml
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo2] Dispatching release-minor-workflow.yaml
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo2] Dispatched https://github.com/someid/somerepo2/actions/runs/1001
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo1] Dispatched https://github.com/someid/somerepo1/actions/runs/1001
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo2] Waiting for release-minor-workflow.yaml, status: in_progress
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo1] Waiting for release-minor-workflow.yaml, status: in_progress
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo1] release-minor-workflow.yaml concluded with success
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo2] release-minor-workflow.yaml concluded with success
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow [1.239685275s]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo1":"https://github.com/someid/somerepo1/actions/runs/1001","someid/somerepo2":"https://github.com/someid/somerepo2/actions/runs/1001"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo1":"success","someid/somerepo2":"success"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow release-minor-workflow.yaml
 
 | Repository | Result | Run |
 |------------|--------|-----|
-| cliffano/suntory | ✅ success | [#1001](https://github.com/cliffano/suntory/actions/runs/1001) |
-| cliffano/olympia | ✅ success | [#1001](https://github.com/cliffano/olympia/actions/runs/1001) |
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/suntory":"https://github.com/cliffano/suntory/actions/runs/1001","cliffano/olympia":"https://github.com/cliffano/olympia/actions/runs/1001"}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/suntory":"success","cliffano/olympia":"success"}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow on multiple repos and wait for completion [1.44149754s]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/suntory":"success","cliffano/olympia":"success"}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/suntory":"https://github.com/cliffano/suntory/actions/runs/1001","cliffano/olympia":"https://github.com/cliffano/olympia/actions/runs/1001"}
+| someid/somerepo1 | ✅ success | [#1001](https://github.com/someid/somerepo1/actions/runs/1001) |
+| someid/somerepo2 | ✅ success | [#1001](https://github.com/someid/somerepo2/actions/runs/1001) |
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo1":"https://github.com/someid/somerepo1/actions/runs/1001","someid/somerepo2":"https://github.com/someid/somerepo2/actions/runs/1001"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo1":"success","someid/somerepo2":"success"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow on multiple repos and wait for completion [1.295911789s]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo1":"https://github.com/someid/somerepo1/actions/runs/1001","someid/somerepo2":"https://github.com/someid/somerepo2/actions/runs/1001"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo1":"success","someid/somerepo2":"success"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow release-minor-workflow.yaml
 
 | Repository | Result | Run |
 |------------|--------|-----|
-| cliffano/suntory | ✅ success | [#1001](https://github.com/cliffano/suntory/actions/runs/1001) |
-| cliffano/olympia | ✅ success | [#1001](https://github.com/cliffano/olympia/actions/runs/1001) |
+| someid/somerepo1 | ✅ success | [#1001](https://github.com/someid/somerepo1/actions/runs/1001) |
+| someid/somerepo2 | ✅ success | [#1001](https://github.com/someid/somerepo2/actions/runs/1001) |
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow with ref and inputs without waiting
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/nowait-composite-dispatch.sh] user= workdir=
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/generator-node] Dispatching release-workflow.yaml
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/generator-node] Dispatched https://github.com/cliffano/generator-node/actions/runs/1001
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow [220.583072ms]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/generator-node":"https://github.com/cliffano/generator-node/actions/runs/1001"}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/generator-node":""}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo3] Dispatching release-workflow.yaml
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo3] Dispatched https://github.com/someid/somerepo3/actions/runs/1001
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow [145.349564ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo3":"https://github.com/someid/somerepo3/actions/runs/1001"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo3":""}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow release-workflow.yaml
 
 | Repository | Result | Run |
 |------------|--------|-----|
-| cliffano/generator-node | 🚀 dispatched | [#1001](https://github.com/cliffano/generator-node/actions/runs/1001) |
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/generator-node":"https://github.com/cliffano/generator-node/actions/runs/1001"}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/generator-node":""}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow with ref and inputs without waiting [301.552157ms]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/generator-node":"https://github.com/cliffano/generator-node/actions/runs/1001"}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/generator-node":""}
+| someid/somerepo3 | 🚀 dispatched | [#1001](https://github.com/someid/somerepo3/actions/runs/1001) |
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo3":"https://github.com/someid/somerepo3/actions/runs/1001"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo3":""}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Dispatch workflow with ref and inputs without waiting [201.746015ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo3":"https://github.com/someid/somerepo3/actions/runs/1001"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo3":""}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow release-workflow.yaml
 
 | Repository | Result | Run |
 |------------|--------|-----|
-| cliffano/generator-node | 🚀 dispatched | [#1001](https://github.com/cliffano/generator-node/actions/runs/1001) |
+| someid/somerepo3 | 🚀 dispatched | [#1001](https://github.com/someid/somerepo3/actions/runs/1001) |
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow when gh doesn't print run URL
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/legacy-composite-dispatch.sh] user= workdir=
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/legacy-repo] Dispatching ci-workflow.yaml
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/legacy-repo] Error: gh did not print the dispatched run URL of ci-workflow.yaml, please upgrade gh
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❗  ::error title=cliffano/legacy-repo::gh did not print the dispatched run URL of ci-workflow.yaml, please upgrade gh
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | Error: ci-workflow.yaml did not succeed on cliffano/legacy-repo
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [220.270915ms]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/legacy-repo":""}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/legacy-repo":"error"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo4] Dispatching ci-workflow.yaml
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo4] Error: gh did not print the dispatched run URL of ci-workflow.yaml, please upgrade gh
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❗  ::error title=someid/somerepo4::gh did not print the dispatched run URL of ci-workflow.yaml, please upgrade gh
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | Error: ci-workflow.yaml did not succeed on someid/somerepo4
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [150.571924ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo4":""}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo4":"error"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
 
 | Repository | Result | Run |
 |------------|--------|-----|
-| cliffano/legacy-repo | ❌ error: gh did not print the dispatched run URL of ci-workflow.yaml, please upgrade gh | - |
+| someid/somerepo4 | ❌ error: gh did not print the dispatched run URL of ci-workflow.yaml, please upgrade gh | - |
 [Test Local Action Outside Standard GitHub Workflows Directory/test] exitcode '1': failure
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/legacy-repo":""}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/legacy-repo":"error"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo4":""}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo4":"error"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test] Failed but continue next step
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow when gh doesn't print run URL [297.264892ms]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/legacy-repo":""}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/legacy-repo":"error"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow when gh doesn't print run URL [207.916985ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo4":""}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo4":"error"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
 
 | Repository | Result | Run |
 |------------|--------|-----|
-| cliffano/legacy-repo | ❌ error: gh did not print the dispatched run URL of ci-workflow.yaml, please upgrade gh | - |
+| someid/somerepo4 | ❌ error: gh did not print the dispatched run URL of ci-workflow.yaml, please upgrade gh | - |
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow with a failing run
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/failing-composite-dispatch.sh] user= workdir=
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/failing-repo] Dispatching ci-workflow.yaml
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/another-repo] Dispatching ci-workflow.yaml
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/failing-repo] Dispatched https://github.com/cliffano/failing-repo/actions/runs/1001
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/another-repo] Dispatched https://github.com/cliffano/another-repo/actions/runs/1001
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/failing-repo] Waiting for ci-workflow.yaml, status: in_progress
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/another-repo] Waiting for ci-workflow.yaml, status: in_progress
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/failing-repo] ci-workflow.yaml concluded with failure
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/another-repo] ci-workflow.yaml concluded with success
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❗  ::error title=cliffano/failing-repo::ci-workflow.yaml concluded with failure: https://github.com/cliffano/failing-repo/actions/runs/1001
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | Error: ci-workflow.yaml did not succeed on cliffano/failing-repo
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [1.357443249s]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/failing-repo":"https://github.com/cliffano/failing-repo/actions/runs/1001","cliffano/another-repo":"https://github.com/cliffano/another-repo/actions/runs/1001"}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/failing-repo":"failure","cliffano/another-repo":"success"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo5] Dispatching ci-workflow.yaml
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo6] Dispatching ci-workflow.yaml
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo5] Dispatched https://github.com/someid/somerepo5/actions/runs/1001
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo6] Dispatched https://github.com/someid/somerepo6/actions/runs/1001
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo6] Waiting for ci-workflow.yaml, status: in_progress
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo5] Waiting for ci-workflow.yaml, status: in_progress
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo5] ci-workflow.yaml concluded with failure
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo6] ci-workflow.yaml concluded with success
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❗  ::error title=someid/somerepo5::ci-workflow.yaml concluded with failure: https://github.com/someid/somerepo5/actions/runs/1001
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | Error: ci-workflow.yaml did not succeed on someid/somerepo5
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [1.242237826s]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo5":"https://github.com/someid/somerepo5/actions/runs/1001","someid/somerepo6":"https://github.com/someid/somerepo6/actions/runs/1001"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo5":"failure","someid/somerepo6":"success"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
 
 | Repository | Result | Run |
 |------------|--------|-----|
-| cliffano/failing-repo | ❌ failure | [#1001](https://github.com/cliffano/failing-repo/actions/runs/1001) |
-| cliffano/another-repo | ✅ success | [#1001](https://github.com/cliffano/another-repo/actions/runs/1001) |
+| someid/somerepo5 | ❌ failure | [#1001](https://github.com/someid/somerepo5/actions/runs/1001) |
+| someid/somerepo6 | ✅ success | [#1001](https://github.com/someid/somerepo6/actions/runs/1001) |
 [Test Local Action Outside Standard GitHub Workflows Directory/test] exitcode '1': failure
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/failing-repo":"https://github.com/cliffano/failing-repo/actions/runs/1001","cliffano/another-repo":"https://github.com/cliffano/another-repo/actions/runs/1001"}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/failing-repo":"failure","cliffano/another-repo":"success"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo5":"https://github.com/someid/somerepo5/actions/runs/1001","someid/somerepo6":"https://github.com/someid/somerepo6/actions/runs/1001"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo5":"failure","someid/somerepo6":"success"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test] Failed but continue next step
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow with a failing run [1.4371473s]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/failing-repo":"https://github.com/cliffano/failing-repo/actions/runs/1001","cliffano/another-repo":"https://github.com/cliffano/another-repo/actions/runs/1001"}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/failing-repo":"failure","cliffano/another-repo":"success"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow with a failing run [1.297285308s]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo5":"https://github.com/someid/somerepo5/actions/runs/1001","someid/somerepo6":"https://github.com/someid/somerepo6/actions/runs/1001"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo5":"failure","someid/somerepo6":"success"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
 
 | Repository | Result | Run |
 |------------|--------|-----|
-| cliffano/failing-repo | ❌ failure | [#1001](https://github.com/cliffano/failing-repo/actions/runs/1001) |
-| cliffano/another-repo | ✅ success | [#1001](https://github.com/cliffano/another-repo/actions/runs/1001) |
+| someid/somerepo5 | ❌ failure | [#1001](https://github.com/someid/somerepo5/actions/runs/1001) |
+| someid/somerepo6 | ✅ success | [#1001](https://github.com/someid/somerepo6/actions/runs/1001) |
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow on a missing repo
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Dispatch workflow
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/missing-composite-dispatch.sh] user= workdir=
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/missing-repo] Dispatching ci-workflow.yaml
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [cliffano/missing-repo] Error: Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❗  ::error title=cliffano/missing-repo::Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   | Error: ci-workflow.yaml did not succeed on cliffano/missing-repo
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [212.562212ms]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/missing-repo":""}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/missing-repo":"error"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo7] Dispatching ci-workflow.yaml
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | [someid/somerepo7] Error: Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❗  ::error title=someid/somerepo7::Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   | Error: ci-workflow.yaml did not succeed on someid/somerepo7
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow [147.803759ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo7":""}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo7":"error"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
 
 | Repository | Result | Run |
 |------------|--------|-----|
-| cliffano/missing-repo | ❌ error: Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found | - |
+| someid/somerepo7 | ❌ error: Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found | - |
 [Test Local Action Outside Standard GitHub Workflows Directory/test] exitcode '1': failure
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/missing-repo":""}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/missing-repo":"error"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo7":""}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo7":"error"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test] Failed but continue next step
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow on a missing repo [285.923802ms]
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"cliffano/missing-repo":""}
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"cliffano/missing-repo":"error"}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ❌  Failure - Main Dispatch workflow on a missing repo [203.692196ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: run_urls={"someid/somerepo7":""}
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  ::set-output:: conclusions={"someid/somerepo7":"error"}
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ⚙  Summary - ### Dispatch Workflow ci-workflow.yaml
 
 | Repository | Result | Run |
 |------------|--------|-----|
-| cliffano/missing-repo | ❌ error: Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found | - |
+| someid/somerepo7 | ❌ error: Unable to dispatch ci-workflow.yaml: HTTP 404: Not Found | - |
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Main Verify dispatch outputs
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/7.sh] user= workdir=
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Verify dispatch outputs [385.054549ms]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Main Verify dispatch outputs [254.70287ms]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Post Dispatch workflow on a missing repo
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow on a missing repo [22.532µs]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow on a missing repo [28.773µs]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Post Dispatch workflow with a failing run
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow with a failing run [24.876µs]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow with a failing run [21.271µs]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Post Dispatch workflow when gh doesn't print run URL
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow when gh doesn't print run URL [24.145µs]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow when gh doesn't print run URL [26.439µs]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Post Dispatch workflow with ref and inputs without waiting
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow with ref and inputs without waiting [32.621µs]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow with ref and inputs without waiting [18.257µs]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Post Dispatch workflow on multiple repos and wait for completion
-[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow on multiple repos and wait for completion [23.715µs]
+[Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Post Dispatch workflow on multiple repos and wait for completion [20.52µs]
 [Test Local Action Outside Standard GitHub Workflows Directory/test] ⭐ Run Complete job
 [Test Local Action Outside Standard GitHub Workflows Directory/test] Cleaning up container for job test
 [Test Local Action Outside Standard GitHub Workflows Directory/test]   ✅  Success - Complete job
