@@ -1,0 +1,72 @@
+<pre><code> _       ____   _____   ___    ___    _   _           ____     ___     ____   ____  
+/ \     / ___| |_   _| |_ _|  / _ \  | \ | |         |  _ \   / _ \   / ___| / ___|
+</code></pre>
+<p>/ _ \   | |       | |    | |  | | | | |  \| |  <strong><em>_</em>  | | | | | | | | | |     _</strong> \ 
+  / ___ \  | |<strong><em>    | |    | |  | |</em>| | | |\  | |</strong><strong><em>| | |</em>| | | |_| | | |</strong><em>   ___) |
+ /</em>/   _\  _<strong><em>|   |</em>|   |</strong><em>|  ___/  |</em>| _|         |<strong><em>_/   _</em>_/   _</strong>_| |____/ </p>
+<h2>Description</h2>
+<p>GitHub Action for dispatching workflows across repositories and waiting for completion</p>
+<h2>Inputs</h2>
+<p>| name | description | required | default |
+| --- | --- | --- | --- |
+| <code>workflow</code> | <p>Workflow file name or ID to dispatch, the workflow must have a workflow_dispatch trigger</p> | <code>true</code> | <code>""</code> |
+| <code>repos</code> | <p>List of repositories in owner/repo format defined in a comma-separated string, the workflow is dispatched on all repositories in parallel</p> | <code>true</code> | <code>""</code> |
+| <code>github_token</code> | <p>GitHub token with permission to dispatch and read workflow runs on all repositories</p> | <code>true</code> | <code>""</code> |
+| <code>ref</code> | <p>Branch or tag containing the workflow to dispatch, default: the repository default branch</p> | <code>false</code> | <code>""</code> |
+| <code>inputs</code> | <p>Workflow inputs defined in a JSON object string</p> | <code>false</code> | <code>{}</code> |
+| <code>wait</code> | <p>Whether to wait for the dispatched workflow runs to complete</p> | <code>false</code> | <code>true</code> |
+| <code>poll_interval</code> | <p>Number of seconds between workflow run status checks</p> | <code>false</code> | <code>30</code> |</p>
+<h2>Outputs</h2>
+<p>| name | description |
+| --- | --- |
+| <code>run_urls</code> | <p>JSON object of each repository and its dispatched workflow run URL</p> |
+| <code>conclusions</code> | <p>JSON object of each repository and its workflow run conclusion, the conclusion is empty when wait is false, or error when the workflow could not be dispatched or its run status could not be retrieved</p> |</p>
+<h2>Runs</h2>
+<p>This action is a <code>composite</code> action.</p>
+<h2>Usage</h2>
+<p>```yaml
+- uses: <strong><em>PROJECT</em></strong>@<strong><em>VERSION</em></strong>
+  with:
+    workflow:
+    # Workflow file name or ID to dispatch, the workflow must have a workflow_dispatch trigger
+    #
+    # Required: true
+    # Default: ""</p>
+<pre><code>repos:
+# List of repositories in owner/repo format defined in a comma-separated string,
+# the workflow is dispatched on all repositories in parallel
+#
+# Required: true
+# Default: ""
+
+github_token:
+# GitHub token with permission to dispatch and read workflow runs on all repositories
+#
+# Required: true
+# Default: ""
+
+ref:
+# Branch or tag containing the workflow to dispatch, default: the repository default branch
+#
+# Required: false
+# Default: ""
+
+inputs:
+# Workflow inputs defined in a JSON object string
+#
+# Required: false
+# Default: {}
+
+wait:
+# Whether to wait for the dispatched workflow runs to complete
+#
+# Required: false
+# Default: true
+
+poll_interval:
+# Number of seconds between workflow run status checks
+#
+# Required: false
+# Default: 30
+</code></pre>
+<p>```</p>
