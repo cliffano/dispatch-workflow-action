@@ -3,7 +3,7 @@ name: Dispatch Workflow GitHub Action
 description: >
   GitHub Action for dispatching workflows across repositories and waiting for
   completion
-version: 1.0.0
+version: 1.0.1-pre.0
 author: Cliffano Subagio
 branding:
   icon: wind
