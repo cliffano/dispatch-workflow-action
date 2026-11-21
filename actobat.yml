@@ -1,0 +1,14 @@
+---
+author: Cliffano Subagio
+package_name: dispatch-workflow-action
+generator:
+  component: github-action
+  inputs:
+    project_id: dispatch-workflow-action
+    project_name: Dispatch Workflow GitHub Action
+    project_desc: GitHub Action for dispatching workflows across repositories and waiting for completion
+    author_name: Cliffano Subagio
+    author_email: cliffano@example.com
+    author_url: https://cliffano.com
+    github_id: cliffano
+    github_repo: dispatch-workflow-action

@@ -1,0 +1,21 @@
+name: Example Workflow
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Use Local Action
+        uses: ./
+        with:
+          workflow: 'ci-workflow.yaml'
+          repos: 'cliffano/dispatch-workflow-action'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Use Remote Action
+      #   uses: cliffano/dispatch-workflow-action@main
+      #   with:
+      #     workflow: 'ci-workflow.yaml'
+      #     repos: 'cliffano/dispatch-workflow-action'
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}

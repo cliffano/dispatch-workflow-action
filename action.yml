@@ -1,0 +1,241 @@
+---
+name: 'Dispatch Workflow GitHub Action'
+description: |
+  GitHub Action for dispatching workflows across repositories and waiting for completion
+# Custom version field
+version: 0.9.0-pre.0
+author: 'Cliffano Subagio'
+branding:
+  icon: 'wind'
+  color: 'white'
+inputs:
+  workflow:
+    description: |
+      Workflow file name or ID to dispatch, the workflow must have a workflow_dispatch trigger
+    type: string
+    required: true
+  repos:
+    description: |
+      List of repositories in owner/repo format defined in a comma-separated string,
+      the workflow is dispatched on all repositories in parallel
+    type: string
+    required: true
+  github_token:
+    description: |
+      GitHub token with permission to dispatch and read workflow runs on all repositories
+    type: string
+    required: true
+  ref:
+    description: |
+      Branch or tag containing the workflow to dispatch, default: the repository default branch
+    type: string
+    required: false
+    default: ''
+  inputs:
+    description: |
+      Workflow inputs defined in a JSON object string
+    type: string
+    required: false
+    default: '{}'
+  wait:
+    description: |
+      Whether to wait for the dispatched workflow runs to complete
+    type: string
+    required: false
+    default: 'true'
+  poll_interval:
+    description: |
+      Number of seconds between workflow run status checks
+    type: string
+    required: false
+    default: '30'
+outputs:
+  run_urls:
+    description: JSON object of each repository and its dispatched workflow run URL
+    value: ${{ steps.dispatch.outputs.run_urls }}
+  conclusions:
+    description: |
+      JSON object of each repository and its workflow run conclusion,
+      the conclusion is empty when wait is false,
+      or error when the workflow could not be dispatched or its run status could not be retrieved
+    value: ${{ steps.dispatch.outputs.conclusions }}
+runs:
+  using: 'composite'
+  steps:
+    - name: Dispatch workflow
+      id: dispatch
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github_token }}
+        WORKFLOW: ${{ inputs.workflow }}
+        REPOS: ${{ inputs.repos }}
+        REF: ${{ inputs.ref }}
+        WORKFLOW_INPUTS: ${{ inputs.inputs }}
+        WAIT: ${{ inputs.wait }}
+        POLL_INTERVAL: ${{ inputs.poll_interval }}
+      run: |
+        set -o errexit
+        set -o nounset
+        set -o pipefail
+
+        # Split comma-separated repositories, and trim whitespaces around each repository
+        repos=()
+        while IFS= read -r repo; do
+          repos+=("${repo}")
+        done < <(tr ',' '\n' <<< "${REPOS}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e '/^$/d')
+        if [ "${#repos[@]}" -eq 0 ]; then
+          echo "Error: repos does not contain any repository"
+          exit 1
+        fi
+
+        workflow_inputs="${WORKFLOW_INPUTS:-}"
+        if [ -z "${workflow_inputs}" ]; then
+          workflow_inputs='{}'
+        fi
+        if ! jq -e 'type == "object"' <<< "${workflow_inputs}" > /dev/null 2>&1; then
+          echo "Error: inputs must be a JSON object"
+          exit 1
+        fi
+
+        results_dir="$(mktemp -d "${RUNNER_TEMP}/dispatch-workflow.XXXXXX")"
+        inputs_file=/dev/null
+        if [ "$(jq 'length' <<< "${workflow_inputs}")" -gt 0 ]; then
+          inputs_file="${results_dir}/inputs.json"
+          printf '%s' "${workflow_inputs}" > "${inputs_file}"
+        fi
+
+        # Dispatch the workflow on a repository, and wait for its run to complete,
+        # the run URL, conclusion, and error message are written to the results directory
+        dispatch_and_wait() {
+          local index="$1"
+          local repo="$2"
+          local log_prefix="[${repo}]"
+          echo 'error' > "${results_dir}/${index}.conclusion"
+          : > "${results_dir}/${index}.url"
+          : > "${results_dir}/${index}.message"
+
+          record_error() {
+            echo "${log_prefix} Error: $1"
+            printf '%s' "$1" > "${results_dir}/${index}.message"
+          }
+
+          local args=(workflow run "${WORKFLOW}" --repo "${repo}")
+          if [ -n "${REF}" ]; then
+            args+=(--ref "${REF}")
+          fi
+          if [ "${inputs_file}" != /dev/null ]; then
+            args+=(--json)
+          fi
+
+          echo "${log_prefix} Dispatching ${WORKFLOW}"
+          local output
+          if ! output="$(gh "${args[@]}" < "${inputs_file}" 2>&1)"; then
+            record_error "Unable to dispatch ${WORKFLOW}: ${output}"
+            return 1
+          fi
+          local run_url
+          run_url="$(grep -oE 'https://[^[:space:]]+/actions/runs/[0-9]+' <<< "${output}" | head -n 1 || true)"
+          if [ -z "${run_url}" ]; then
+            record_error "gh did not print the dispatched run URL of ${WORKFLOW}, please upgrade gh"
+            return 1
+          fi
+          echo "${run_url}" > "${results_dir}/${index}.url"
+          echo "${log_prefix} Dispatched ${run_url}"
+
+          if [ "${WAIT}" != 'true' ]; then
+            : > "${results_dir}/${index}.conclusion"
+            return 0
+          fi
+
+          local run status conclusion
+          while true; do
+            if ! run="$(gh run view "${run_url##*/}" --repo "${repo}" --json status,conclusion 2>&1)"; then
+              record_error "Unable to retrieve ${WORKFLOW} run status: ${run}"
+              return 1
+            fi
+            status="$(jq -r '.status' <<< "${run}")"
+            if [ "${status}" = 'completed' ]; then
+              break
+            fi
+            echo "${log_prefix} Waiting for ${WORKFLOW}, status: ${status}"
+            sleep "${POLL_INTERVAL}"
+          done
+          conclusion="$(jq -r '.conclusion' <<< "${run}")"
+          echo "${conclusion}" > "${results_dir}/${index}.conclusion"
+          echo "${log_prefix} ${WORKFLOW} concluded with ${conclusion}"
+          if [ "${conclusion}" != 'success' ]; then
+            printf '%s' "${WORKFLOW} concluded with ${conclusion}: ${run_url}" > "${results_dir}/${index}.message"
+          fi
+        }
+
+        # Escape annotation message and property values, as per GitHub workflow commands format
+        escape_data() {
+          local value="${1//'%'/%25}"
+          value="${value//$'\r'/%0D}"
+          printf '%s' "${value//$'\n'/%0A}"
+        }
+        escape_property() {
+          local value
+          value="$(escape_data "$1")"
+          value="${value//':'/%3A}"
+          printf '%s' "${value//','/%2C}"
+        }
+
+        # Escape job summary table cell value, newlines and pipe characters would break the table
+        escape_cell() {
+          printf '%s' "$1" | tr '\r\n' '  ' | sed 's/|/\\|/g'
+        }
+
+        pids=()
+        for index in "${!repos[@]}"; do
+          dispatch_and_wait "${index}" "${repos[${index}]}" &
+          pids+=("$!")
+        done
+        for pid in "${pids[@]}"; do
+          wait "${pid}" || true
+        done
+
+        summary_file="${GITHUB_STEP_SUMMARY:-/dev/null}"
+        {
+          echo "### Dispatch Workflow ${WORKFLOW}"
+          echo
+          echo '| Repository | Result | Run |'
+          echo '|------------|--------|-----|'
+        } >> "${summary_file}"
+
+        run_urls='{}'
+        conclusions='{}'
+        failed_repos=()
+        for index in "${!repos[@]}"; do
+          repo="${repos[${index}]}"
+          run_url="$(cat "${results_dir}/${index}.url")"
+          conclusion="$(cat "${results_dir}/${index}.conclusion")"
+          message="$(cat "${results_dir}/${index}.message")"
+          run_urls="$(jq -c --arg repo "${repo}" --arg value "${run_url}" '. + {($repo): $value}' <<< "${run_urls}")"
+          conclusions="$(jq -c --arg repo "${repo}" --arg value "${conclusion}" '. + {($repo): $value}' <<< "${conclusions}")"
+
+          case "${conclusion}" in
+            success) result='✅ success' ;;
+            '') result='🚀 dispatched' ;;
+            error) result="❌ error: $(escape_cell "${message}")" ;;
+            *) result="❌ ${conclusion}" ;;
+          esac
+          run_link='-'
+          if [ -n "${run_url}" ]; then
+            run_link="[#${run_url##*/}](${run_url})"
+          fi
+          echo "| ${repo} | ${result} | ${run_link} |" >> "${summary_file}"
+
+          if [ -n "${conclusion}" ] && [ "${conclusion}" != 'success' ]; then
+            failed_repos+=("${repo}")
+            echo "::error title=$(escape_property "${repo}")::$(escape_data "${message}")"
+          fi
+        done
+
+        echo "run_urls=${run_urls}" >> "${GITHUB_OUTPUT}"
+        echo "conclusions=${conclusions}" >> "${GITHUB_OUTPUT}"
+
+        if [ "${#failed_repos[@]}" -gt 0 ]; then
+          echo "Error: ${WORKFLOW} did not succeed on ${failed_repos[*]}"
+          exit 1
+        fi
