@@ -1,9 +1,10 @@
 <!-- BEGIN:AVATAR -->
-To be populated by generator-github-action github-action-partials
+![Avatar](avatar.jpg)
 <!-- END:AVATAR -->
 
 <!-- BEGIN:BADGES -->
-To be populated by generator-github-action github-action-partials
+[![Build Status](https://github.com/cliffano/dispatch-workflow-action/workflows/CI/badge.svg)](https://github.com/cliffano/dispatch-workflow-action/actions?query=workflow%3ACI)
+[![Security Status](https://snyk.io/test/github/cliffano/dispatch-workflow-action/badge.svg)](https://snyk.io/test/github/cliffano/dispatch-workflow-action)
 <!-- END:BADGES -->
 
 # Dispatch Workflow GitHub Action
@@ -127,9 +128,14 @@ The action also adds an error annotation for each repository whose workflow run 
 ## Colophon
 
 <!-- BEGIN:DEVELOPERS_GUIDE -->
-To be populated by generator-github-action github-action-partials
+[Developer's Guide](https://cliffano.github.io/developers-guide-github-action.html)
 <!-- END:DEVELOPERS_GUIDE -->
 
 <!-- BEGIN:BUILD_REPORTS -->
-To be populated by generator-github-action github-action-partials
+Build reports:
+
+* [Lint report](https://cliffano.github.io/dispatch-workflow-action/lint/yamllint.txt)
+* [Test report](https://cliffano.github.io/dispatch-workflow-action/test/act.txt)
+* [API documentation](https://cliffano.github.io/dispatch-workflow-action/doc/action-docs/index.html)
+
 <!-- END:BUILD_REPORTS -->
