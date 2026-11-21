@@ -12,3 +12,4 @@ generator:
     author_url: https://cliffano.com
     github_id: cliffano
     github_repo: dispatch-workflow-action
+    github_token_prefix: STUDIO
